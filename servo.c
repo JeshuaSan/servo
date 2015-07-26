@@ -2,6 +2,12 @@
 #include "common/globals.h"
 #include "common/types.h"
 
+#define DC_MIN      (1574U) // ~1.3 ms Backwards
+#define DC_Z        (1816) // ~1.5 ms Stop
+#define DC_MAX      (2058U) // ~1.7 ms Forwards
+#define DC_DELTA    (DC_MAX - DC_Z)
+#define DC_MAP(dc)  (((dc) * (DC_DELTA)) / 100U)
+
 /* Private prototypes *********************************************************/
 static void servo_configReg(ePTCKPS ps);
 static void servo_setFreq(uint16_t freq, ePTCKPS ps);
@@ -19,10 +25,9 @@ void servo_setDC(eSERVO reg, uint16_t dutycycle)
     *dc[reg] = dutycycle;
 }
 
-void servo_setDCPC(eSERVO reg, uint16_t dutycyclePC)
+void servo_setDCPC(eSERVO reg, int16_t dutycyclePC)
 {
-    vuint32_t maxDC = (P1TPER + 1) * 2;
-    uint32_t dutycycle = (maxDC * dutycyclePC) / 100;
+    int16_t dutycycle = DC_Z + ((dutycyclePC * 241) / 100);
     servo_setDC(reg, dutycycle);
 }
 

@@ -22,7 +22,7 @@ void servo_init(uint16_t freq, ePTCKPS ps);
 void servo_start(void);
 void servo_stop(void);
 void servo_setDC(eSERVO reg, uint16_t dutycycle);
-void servo_setDCPC(eSERVO reg, uint16_t dutycycle);
+void servo_setDCPC(eSERVO reg, int16_t dutycycle);
 
 #endif	/* SERVO_H */
 
